@@ -1,11 +1,8 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
 require('dotenv').config()
 const UserRoutes = require('./Routes/UserRoutes')
 const app = express();
-app.use(bodyParser.json());
-app.use(cors())
+app.use(express.json());
 
 // CRUD = CREATE(POST), READ(GET), UPDATE(PUT/PATCH), DELETE(DELETE)
 //requires two parameters,port and callback function
