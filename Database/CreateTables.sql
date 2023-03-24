@@ -1,11 +1,11 @@
 CREATE DATABASE Kustoma24;
-
-
+USE Kustoma24
+CREATE SCHEMA kustoma
 CREATE TABLE kustoma.users (
     id INT  IDENTITY(1,1) PRIMARY KEY,
     fullname VARCHAR(250) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
-    "profile" VARCHAR(100) NOT NULL,
+    "profile" VARCHAR(MAX) NOT NULL,
     "password" VARCHAR(100) NOT NULL,
     gender VARCHAR(10) NOT NULL,
     department VARCHAR(100) NOT NULL,
@@ -20,7 +20,7 @@ CREATE TABLE kustoma.customer(
     id INT  IDENTITY(1,1) PRIMARY KEY,
     fullname VARCHAR(250) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
-    "profile" VARCHAR(100) NOT NULL,
+    "profile" VARCHAR(MAX) NOT NULL,
     "password" VARCHAR(100) NOT NULL,
      gender VARCHAR(100) NOT NULL,
     loyalty_points INT DEFAULT 0,
@@ -28,22 +28,6 @@ CREATE TABLE kustoma.customer(
     "status" VARCHAR(255) NOT NULL,
     registered_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
-
-CREATE TABLE kustoma.products(
-    id INT  IDENTITY(1,1) PRIMARY KEY,
-    title VARCHAR(250) NOT NULL,
-    price DECIMAL(10,2) NOT NULL,
-    "description" TEXT,
-    category_id INT NOT NULL,
-    "image"  VARCHAR(255),
-    rate FLOAT,
-    count INT NOT NULL,
-    isDeleted BIT DEFAULT 0,
-    "status" BIT DEFAULT 1,
-    date DATE NOT NULL,
-    FOREIGN KEY (category_id) REFERENCES kustoma.category(id)
-);
-
 CREATE TABLE kustoma.category(
     id INT  IDENTITY(1,1) PRIMARY KEY,
     "name" VARCHAR(250) NOT NULL,
@@ -51,6 +35,22 @@ CREATE TABLE kustoma.category(
      "date" DATETIME DEFAULT CURRENT_TIMESTAMP,
      isDeleted BIT DEFAULT 0
 );
+CREATE TABLE kustoma.products(
+    id INT  IDENTITY(1,1) PRIMARY KEY,
+    title VARCHAR(250) NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    "description" TEXT,
+    category_id INT NOT NULL,
+    "image"  VARCHAR(MAX),
+    rate FLOAT,
+    count INT NOT NULL,
+    isDeleted BIT DEFAULT 0,
+    "status" VARCHAR(225) NOT NULL,
+    date DATETIME DEFAULT CURRENT_TIMESTAMP
+    FOREIGN KEY (category_id) REFERENCES kustoma.category(id)
+);
+
+
 
 CREATE TABLE kustoma.activity(
     id INT  IDENTITY(1,1) PRIMARY KEY,
@@ -78,3 +78,17 @@ CREATE TABLE kustoma.sales(
     FOREIGN KEY (customer_id) REFERENCES kustoma.customer(id),
     FOREIGN KEY (product_id) REFERENCES kustoma.products(id)
 );
+
+
+
+CREATE TABLE kustoma.notification(
+    id INT  IDENTITY(1,1) PRIMARY KEY,
+    user_id INT NOT NULL,
+    receiver INT NOT NULL,
+    title VARCHAR(100) NOT NULL,
+    "description" VARCHAR(100) NOT NULL,
+    date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES kustoma.users(id),
+    FOREIGN KEY (receiver) REFERENCES kustoma.users(id)
+);
+
