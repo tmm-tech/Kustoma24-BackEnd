@@ -54,12 +54,10 @@ CREATE TABLE kustoma.products(
 
 CREATE TABLE kustoma.activity(
     id INT  IDENTITY(1,1) PRIMARY KEY,
-    month VARCHAR(250) NOT NULL,
     user_id INT NOT NULL,
-    day INT NOT NULL,
     title VARCHAR(100) NOT NULL,
     "description" VARCHAR(100) NOT NULL,
-    registered_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    "date" DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES kustoma.users(id)
 );
 

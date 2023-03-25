@@ -1,8 +1,8 @@
 const sql = require('mssql');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const validateCreateUserSchema = require('../Utilities/Validation/RegistrationValidation')
-const validateCreateloginUserSchema = require('../Utilities/LoginValidation')
+const validateCreateUserSchema = require('../Services/RegistrationValidation')
+const validateCreateloginUserSchema = require('../Services/LoginValidation')
 const { config } = require('../config/sqlConfig');
 const pool = new sql.ConnectionPool(config);
 module.exports = {

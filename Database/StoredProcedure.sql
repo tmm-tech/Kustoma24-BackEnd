@@ -31,16 +31,19 @@ AS
 GO
 
 CREATE PROCEDURE add_activity
-    @month VARCHAR(100),
-    @day INT,
     @title VARCHAR(100),
     @description TEXT
 AS
     INSERT INTO kustoma.activity (month,day,title,description)
-    VALUES (@month, @day, @title, @description)
+    VALUES (@title, @description)
 GO
 
-
+CREATE PROCEDURE Getactivity
+    @id INT ,
+AS
+    SELECT * FROM kustoma.activity 
+    WHERE id = @id;
+GO
 
 CREATE PROCEDURE UserLogin
     @email VARCHAR(50),
