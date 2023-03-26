@@ -120,7 +120,7 @@ GO
 -- User Stored Procedures
 
 CREATE PROCEDURE UserLogin
-    @email VARCHAR(50)
+    @email VARCHAR(100)
 AS
     SELECT * FROM kustoma.users 
     WHERE email = @email

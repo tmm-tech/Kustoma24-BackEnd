@@ -44,26 +44,29 @@ module.exports = {
         }
     },
     loginUser: async(req, res) => {
-        const { email, password } = req.body;
-
+        const details = req.body;
+        console.log(details)
         try {
-            const pool = await sql.connect(config);
+            await pool.connect();
             const result = await pool.request()
-                .input('email', sql.VARCHAR, email)
+                .input('email', details.email)
                 .execute('UserLogin');
 
             if (result.recordset.length > 0) {
                 const user = result.recordset[0];
-                const match = await bcrypt.compare(password, user.password);
+                const match = await bcrypt.compare(details.password, user.password);
+                console.log(match)
+
                 if (match) {
+                    console.log(user.id)
                     const token = jwt.sign({ id: user.id, email: user.email }, process.env.SECRET);
                     await pool.request()
-                        .input('user_id', sql.Int, user.user_id)
+                        .input('id', user.id)
                         .input('status', "active")
                         .execute('UpdateUserStatus');
                     res.json({ success: true, token });
                 } else {
-                    res.status(401).json({ success: false, message: 'Invalid email or password' });
+                    res.status(401).json({ success: false, message: 'Password no match' });
                 }
             } else {
                 res.status(401).json({ success: false, message: 'Invalid email or password' });
@@ -82,6 +85,7 @@ module.exports = {
             const users = result.recordset;
             res.json(users);
             console.log(users)
+            if (result.rowsAffected.length) res.json({ success: true, message: 'user retrieved successfully' })
         } catch (error) {
             res.status(500).json(`Get User Details Error: ${error}`);
         }
@@ -91,12 +95,13 @@ module.exports = {
         const { id } = req.params;
         try {
             await pool.connect();
+            let hashed_pwd = await bcrypt.hash(password, 8)
             const result = await pool.request()
                 .input("id", id)
                 .input('fullname', fullname)
                 .input('email', email)
                 .input('profile', profile)
-                .input('password', password)
+                .input('password', hashed_pwd)
                 .input('department', department)
                 .input('roles', roles)
                 .execute('updateUser');
@@ -113,11 +118,9 @@ module.exports = {
             await pool.connect();
             const result = await pool.request()
                 .input("id", id).execute('RemoveUser');
-            const users = result.recordset;
-            res.json(users);
-            console.log(users)
+            if (result.rowsAffected.length) res.json({ success: true, message: 'user deleted successfully' })
         } catch (error) {
-            res.status(500).json(`Get User Details Error: ${error}`);
+            res.status(500).json(`Remove User Error: ${error}`);
         }
 
     },
@@ -126,12 +129,12 @@ module.exports = {
         try {
             await pool.connect();
             const result = await pool.request()
-                .input("id", id).execute('Logout');
-            const users = result.recordset;
-            res.json(users);
-            console.log(users)
+                .input("id", id)
+                .input("status", "inactive")
+                .execute('UpdateUserStatus');
+            if (result.rowsAffected.length) res.json({ success: true, message: 'user Log Out successful' })
         } catch (error) {
-            res.status(500).json(`Get User Details Error: ${error}`);
+            res.status(500).json(`Get Log Out Error: ${error}`);
         }
     },
 

@@ -5,6 +5,7 @@ const {
     updateUser,
     SoftDeleteUser,
     loginUser,
+    Logout,
 } = require('../Controllers/UserControllers');
 
 
@@ -18,6 +19,8 @@ UserRoutes.delete('/user/:id', SoftDeleteUser)
 UserRoutes.put('/update/:id', updateUser)
     // login a user
 UserRoutes.post('/login', loginUser)
+    // logout user
+UserRoutes.post('/logout/:id', Logout)
     //     // update product
     // UserRoutes.get('/product/:id', updateproduct)
     //     //soft delete product of a specific id
