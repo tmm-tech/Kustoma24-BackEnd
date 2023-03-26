@@ -40,6 +40,26 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE UpdateCustomer
+    @id INT,
+    @fullname VARCHAR(255),
+    @email VARCHAR(255),
+    @profile VARCHAR(25),
+    @password VARCHAR(255),
+    @department VARCHAR(255),
+    @roles VARCHAR(255)
+AS
+BEGIN
+    UPDATE kustoma.users
+    SET fullname = @fullname,
+      email = @email,
+      profile = @profile,
+      password = @password,
+      department = @department,
+      roles = @roles
+  WHERE id = @id;
+END
+GO
 -- Product Stored Procedures
 
 CREATE PROCEDURE get_products_by_category 
@@ -99,9 +119,9 @@ GO
 
 -- Activities Procedures
 
-ALTER PROCEDURE add_activity
+CREATE PROCEDURE add_activity
     @title VARCHAR(100),
-    @description TEXT,
+    @description VARCHAR(MAX),
     @user_id INT
 AS
 BEGIN

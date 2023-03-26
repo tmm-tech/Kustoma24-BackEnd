@@ -1,6 +1,7 @@
 CREATE DATABASE Kustoma24;
 USE Kustoma24
 CREATE SCHEMA kustoma
+GO
 
 CREATE TABLE kustoma.users (
     id INT  IDENTITY(1,1) PRIMARY KEY,
@@ -57,7 +58,7 @@ CREATE TABLE kustoma.activity(
     id INT  IDENTITY(1,1) PRIMARY KEY,
     user_id INT NOT NULL,
     title VARCHAR(100) NOT NULL,
-    "description" VARCHAR(100) NOT NULL,
+    "description" VARCHAR(MAX),
     "date" DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES kustoma.users(id)
 );
@@ -91,4 +92,4 @@ CREATE TABLE kustoma.notification(
     FOREIGN KEY (receiver) REFERENCES kustoma.users(id)
 );
 
-SELECT * FROM kustoma.users
+

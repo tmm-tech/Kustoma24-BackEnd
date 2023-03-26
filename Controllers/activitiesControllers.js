@@ -10,22 +10,24 @@ module.exports = {
                 .input("id", id).execute('Getactivity');
             const activities = result.recordset;
             res.json(activities);
+            if (result.rowsAffected.length) res.json({ success: true, message: 'activity retrieved successfully' })
         } catch (error) {
             res.status(500).json(`Get All Activitie Error: ${error}`);
         }
     },
     createactivity: async(req, res) => {
-        const { title, description } = req.body;
+        const { user_id, title, description } = req.body;
+        console.log(user_id)
         try {
             await pool.connect();
             const result = await pool.request()
+                .input("user_id", user_id)
                 .input("title", title)
                 .input("description", description)
                 .execute('add_activity');
-            const activity = result.recordset;
-            res.json(activity);
+            if (result.rowsAffected.length) res.json({ success: true, message: 'activity created successfully' })
         } catch (error) {
-            res.status(500).json(`Create ActivityError: ${error}`)
+            res.status(500).json(`Create Activity Error: ${error}`)
         }
     }
 }
