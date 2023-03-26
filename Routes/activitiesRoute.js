@@ -5,6 +5,9 @@ const {
 } = require('../Controllers/activitiesControllers');
 
 // get all activities
-UserRoutes.get('/activity/:id', getAllActivities);
+activitiesRoute.get('/activity/:id', getAllActivities);
 // create activity
-UserRoutes.post('/activity', createactivity);
+activitiesRoute.post('/activity', createactivity);
+
+
+module.exports = activitiesRoute

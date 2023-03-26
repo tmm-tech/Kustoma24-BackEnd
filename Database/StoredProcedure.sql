@@ -1,4 +1,4 @@
-use Kustoma24
+-- Customer Stored Procedures
 CREATE PROCEDURE add_customer 
     @fullname VARCHAR(100),
     @email VARCHAR(100),
@@ -13,7 +13,6 @@ BEGIN
 END
 GO
 
-
 CREATE PROCEDURE update_loyalty_points 
     @id INT,
     @points INT
@@ -22,6 +21,26 @@ AS
     SET loyalty_points = loyalty_points + @points
     WHERE id = @id
 GO
+CREATE PROCEDURE GetCustomers
+AS
+BEGIN
+    SELECT *
+    FROM kustoma.customer
+    WHERE isDeleted = 0;
+END
+GO
+CREATE PROCEDURE Remove_Customer
+    @customer_id INT
+AS
+BEGIN
+    UPDATE kustoma.customer
+    SET isDeleted = 1
+    WHERE id = @customer_id
+END
+GO
+
+-- Product Stored Procedures
+
 CREATE PROCEDURE get_products_by_category 
     @category_id INT
 AS
@@ -30,20 +49,44 @@ AS
 
 GO
 
-CREATE PROCEDURE add_activity
-    @title VARCHAR(100),
-    @description TEXT
+CREATE PROCEDURE getProduct
+
 AS
-    INSERT INTO kustoma.activity (month,day,title,description)
-    VALUES (@title, @description)
+    SELECT * FROM kustoma.products 
+    WHERE isDeleted = 0 AND status = 'active'
+GO
+
+CREATE PROCEDURE Remove_Product
+    @product_id INT
+AS
+BEGIN
+    UPDATE kustoma.products
+    SET isDeleted = 1
+    WHERE id = @product_id
+END
+GO
+
+-- Activities Procedures
+
+ALTER PROCEDURE add_activity
+    @title VARCHAR(100),
+    @description TEXT,
+    @user_id INT
+AS
+BEGIN
+    INSERT INTO kustoma.activity (user_id,title,"description")
+    VALUES (@user_id,@title, @description)
+END
 GO
 
 CREATE PROCEDURE Getactivity
-    @id INT ,
+    @id INT
 AS
     SELECT * FROM kustoma.activity 
-    WHERE id = @id;
+    WHERE user_id = @id;
 GO
+
+-- User Stored Procedures
 
 CREATE PROCEDURE UserLogin
     @email VARCHAR(50),
@@ -53,20 +96,17 @@ AS
     WHERE email = @email AND password = @password
 GO
 
-CREATE PROCEDURE GetCustomers
+CREATE PROCEDURE GetUser
+    @id INT
 AS
 BEGIN
     SELECT *
-    FROM kustoma.customer
-    WHERE isDeleted = 0;
+    FROM kustoma.users
+    WHERE id = @id;
 END
 GO
-CREATE PROCEDURE getProduct
 
-AS
-    SELECT * FROM kustoma.products 
-    WHERE isDeleted = 0 AND status = 'active'
-GO
+-- Categories Stored Procedure
 
 CREATE PROCEDURE GetCategories
 AS
@@ -84,25 +124,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE Remove_Product
-    @product_id INT
-AS
-BEGIN
-    UPDATE kustoma.products
-    SET isDeleted = 1
-    WHERE id = @product_id
-END
-GO
 
-CREATE PROCEDURE Remove_Customer
-    @customer_id INT
-AS
-BEGIN
-    UPDATE kustoma.customer
-    SET isDeleted = 1
-    WHERE id = @customer_id
-END
-GO
 
 CREATE PROCEDURE Remove_User
     @user_id INT
@@ -130,6 +152,7 @@ BEGIN
 END
 GO
 
+-- SALES Stored Procedure
 -- CREATE PROCEDURE AddSale
 --     @date date,
 --     @product_ids int[],

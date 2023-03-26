@@ -1,6 +1,7 @@
 CREATE DATABASE Kustoma24;
 USE Kustoma24
 CREATE SCHEMA kustoma
+
 CREATE TABLE kustoma.users (
     id INT  IDENTITY(1,1) PRIMARY KEY,
     fullname VARCHAR(250) NOT NULL,
@@ -46,7 +47,7 @@ CREATE TABLE kustoma.products(
     count INT NOT NULL,
     isDeleted BIT DEFAULT 0,
     "status" VARCHAR(225) NOT NULL,
-    date DATETIME DEFAULT CURRENT_TIMESTAMP
+    "date" DATETIME DEFAULT CURRENT_TIMESTAMP
     FOREIGN KEY (category_id) REFERENCES kustoma.category(id)
 );
 
@@ -64,7 +65,6 @@ CREATE TABLE kustoma.activity(
 
 CREATE TABLE kustoma.sales(
     id INT IDENTITY(1,1) PRIMARY KEY,
-    date DATE NOT NULL,
     product_id INT NOT NULL,
     customer_id INT NOT NULL,
     price DECIMAL(10,2) NOT NULL,
@@ -72,7 +72,8 @@ CREATE TABLE kustoma.sales(
     quantity INT NOT NULL,
     total_price DECIMAL(10,2) NOT  NULL,
     payment_method VARCHAR(50) NOT NULL,
-    status VARCHAR(20) DEFAULT 'pending',
+    "status" VARCHAR(20) NOT NULL,
+     "date" DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (customer_id) REFERENCES kustoma.customer(id),
     FOREIGN KEY (product_id) REFERENCES kustoma.products(id)
 );
@@ -85,8 +86,9 @@ CREATE TABLE kustoma.notification(
     receiver INT NOT NULL,
     title VARCHAR(100) NOT NULL,
     "description" VARCHAR(100) NOT NULL,
-    date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    "date" DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES kustoma.users(id),
     FOREIGN KEY (receiver) REFERENCES kustoma.users(id)
 );
 
+SELECT * FROM kustoma.users

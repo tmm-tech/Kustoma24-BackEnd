@@ -1,12 +1,27 @@
 const express = require('express');
-require('dotenv').config()
-const UserRoutes = require('./Routes/UserRoutes')
+require('dotenv').config();
+const UserRoutes = require('./Routes/UserRoutes');
+const activitiesRoute = require('./Routes/activitiesRoute');
+const categoriesRoute = require('./Routes/categoriesRoute');
+const customerRoute = require('./Routes/customerRoute');
+const notificationRoute = require('./Routes/notificationRoute');
+const ProductRoutes = require('./Routes/ProductRoutes');
+const salesRoute = require('./Routes/salesRoute');
 const app = express();
 app.use(express.json());
 
-//user Routes
-app.use('/kustoma24', UserRoutes);
+//Routes
+app.use('/users', UserRoutes);
+app.use('/activities', activitiesRoute);
 
-//connection to the server
+app.get('/', async(req, res) => {
+        res.send("Confirmed Connection is Successful");
+    })
+    // app.use('/categories', categoriesRoute);
+    // app.use('/customer', customerRoute);
+    // app.use('/notification', notificationRoute);
+    // app.use('/product', ProductRoutes);
+    // app.use('/sales', salesRoute);
+    //connection to the server
 const port = process.env.PORT || 4080;
 app.listen(port, () => { console.log(`Server Listening on port: ${port}`) })

@@ -1,0 +1,21 @@
+-----------------------------------------------------
+CREATE User
+POST https://localhost:4040/users/register 
+-----------------------------------------------------
+Get User Details
+GET https://localhost:4040/users/user/1 
+-----------------------------------------------------
+SoftDeleteUser User
+DELETE https://localhost:4040/users/1 
+-----------------------------------------------------
+ put User
+PUT https://localhost:4040/users/update/user/1 
+-----------------------------------------------------
+Login User
+POST https://localhost:4040/users/login
+-----------------------------------------------------
+GET ACTIVITY
+GET https://localhost:4040/activities/activity/1 
+-----------------------------------------------------
+Insert Activity
+POST https://localhost:4040/activities/activity 
