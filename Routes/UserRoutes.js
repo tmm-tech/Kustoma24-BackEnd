@@ -15,7 +15,7 @@ UserRoutes.get('/user/:id', getAUser)
     //soft delete item of a specific id
 UserRoutes.delete('/user/:id', SoftDeleteUser)
     //update items
-UserRoutes.put('/update/user/:id', updateUser)
+UserRoutes.put('/update/:id', updateUser)
     // login a user
 UserRoutes.post('/login', loginUser)
     //     // update product

@@ -1,4 +1,5 @@
 -- Customer Stored Procedures
+
 CREATE PROCEDURE add_customer 
     @fullname VARCHAR(100),
     @email VARCHAR(100),
@@ -56,6 +57,36 @@ AS
     WHERE isDeleted = 0 AND status = 'active'
 GO
 
+CREATE PROCEDURE AddProduct
+    @name varchar(100),
+    @image varchar(255),
+    @category varchar(100),
+    @description varchar(255),
+    @price decimal(10,2),
+    @user_id int
+AS
+BEGIN
+    DECLARE @category_id int
+    DECLARE @role VARCHAR(255)
+    -- Check if category exists
+    SELECT @category_id = id FROM kustoma.category WHERE name = @category
+    SELECT role = @role FROM kustoma.users WHERE id = @user_id
+    -- Set product status based on user role
+    DECLARE @status varchar(10)
+    SELECT @status = 
+        CASE 
+            WHEN @role = 'staff' THEN 'inactive'
+            ELSE 'active'
+        END
+    FROM kustoma.users 
+    WHERE id = @user_id
+    
+    -- Insert product into Products table
+    INSERT INTO kustoma.products (title, image, category_id, description, price, status)
+    VALUES (@name, @image, @category_id, @description, @price, @status)
+END
+GO
+
 CREATE PROCEDURE Remove_Product
     @product_id INT
 AS
@@ -89,11 +120,10 @@ GO
 -- User Stored Procedures
 
 CREATE PROCEDURE UserLogin
-    @email VARCHAR(50),
-    @password VARCHAR(50)
+    @email VARCHAR(50)
 AS
     SELECT * FROM kustoma.users 
-    WHERE email = @email AND password = @password
+    WHERE email = @email
 GO
 
 CREATE PROCEDURE GetUser
@@ -106,33 +136,23 @@ BEGIN
 END
 GO
 
--- Categories Stored Procedure
-
-CREATE PROCEDURE GetCategories
-AS
-    SELECT * FROM kustoma.category
-    WHERE isDeleted = 0 AND status = 'active'
-GO
-
-CREATE PROCEDURE Remove_Category
-    @category_id INT
-AS
-BEGIN 
-    UPDATE kustoma.category
-    SET isDeleted = 1
-    WHERE id = @category_id
-END
-GO
-
-
-
-CREATE PROCEDURE Remove_User
-    @user_id INT
+CREATE PROCEDURE RemoveUser
+    @id INT
 AS
 BEGIN
     UPDATE kustoma.users
     SET isDeleted = 1
-    WHERE id = @user_id
+    WHERE id = @id
+END
+GO
+CREATE PROCEDURE UpdateUserStatus
+    @id INT,
+    @status VARCHAR(100)
+AS
+BEGIN
+    UPDATE kustoma.users
+    SET "status" = @status
+    WHERE id = @id
 END
 GO
 
@@ -152,7 +172,61 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE UpdateUser
+    @id INT,
+    @fullname VARCHAR(255),
+    @email VARCHAR(255),
+    @profile VARCHAR(25),
+    @password VARCHAR(255),
+    @department VARCHAR(255),
+    @roles VARCHAR(255)
+AS
+BEGIN
+    UPDATE kustoma.users
+    SET fullname = @fullname,
+      email = @email,
+      profile = @profile,
+      password = @password,
+      department = @department,
+      roles = @roles
+  WHERE id = @id;
+END
+GO
+-- Categories Stored Procedure
+
+CREATE PROCEDURE GetCategories
+AS
+    SELECT * FROM kustoma.category
+    WHERE isDeleted = 0 AND status = 'active'
+GO
+
+CREATE PROCEDURE AddCategory
+    @name varchar(100),
+    @date date
+AS
+BEGIN
+    -- Insert category into Categories table
+    INSERT INTO kustoma.category (name, date) 
+    VALUES (@name, @date)
+END
+GO
+
+CREATE PROCEDURE Remove_Category
+    @category_id INT
+AS
+BEGIN 
+    UPDATE kustoma.category
+    SET isDeleted = 1
+    WHERE id = @category_id
+END
+GO
+
+
+
+
+
 -- SALES Stored Procedure
+
 -- CREATE PROCEDURE AddSale
 --     @date date,
 --     @product_ids int[],
@@ -184,43 +258,3 @@ GO
 -- END
 -- GO
 
-CREATE PROCEDURE AddProduct
-    @name varchar(100),
-    @image varchar(255),
-    @category varchar(100),
-    @description varchar(255),
-    @price decimal(10,2),
-    @user_id int
-AS
-BEGIN
-    DECLARE @category_id int
-    DECLARE @role VARCHAR(255)
-    -- Check if category exists
-    SELECT @category_id = id FROM kustoma.category WHERE name = @category
-    SELECT role = @role FROM kustoma.users WHERE id = @user_id
-    -- Set product status based on user role
-    DECLARE @status varchar(10)
-    SELECT @status = 
-        CASE 
-            WHEN @role = 'staff' THEN 'inactive'
-            ELSE 'active'
-        END
-    FROM kustoma.users 
-    WHERE id = @user_id
-    
-    -- Insert product into Products table
-    INSERT INTO kustoma.products (title, image, category_id, description, price, status)
-    VALUES (@name, @image, @category_id, @description, @price, @status)
-END
-GO
-
-CREATE PROCEDURE AddCategory
-    @name varchar(100),
-    @date date
-AS
-BEGIN
-    -- Insert category into Categories table
-    INSERT INTO kustoma.category (name, date) 
-    VALUES (@name, @date)
-END
-GO

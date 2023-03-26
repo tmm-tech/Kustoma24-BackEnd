@@ -36,6 +36,7 @@ module.exports = {
                 .input("roles", value.roles)
                 .input("status", "inactive")
                 .execute('add_User')
+            console.log(results.recordset);
             res.json({ success: true, message: 'Registration successful' })
 
         } catch (error) {
@@ -43,17 +44,23 @@ module.exports = {
         }
     },
     loginUser: async(req, res) => {
-        const { email, passwords } = req.body;
+        const { email, password } = req.body;
 
         try {
-            await sql.connect(mssqlconfig);
-            const result = await sql.query `SELECT * FROM bonga.users WHERE email = ${email}`;
+            const pool = await sql.connect(config);
+            const result = await pool.request()
+                .input('email', sql.VARCHAR, email)
+                .execute('UserLogin');
+
             if (result.recordset.length > 0) {
                 const user = result.recordset[0];
-                const match = await bcrpyt.compare(passwords, user.passwords);
+                const match = await bcrypt.compare(password, user.password);
                 if (match) {
-                    const token = jwt.sign({ id: user.user_id, email: user.email }, process.env.SECRET);
-                    await sql.query `UPDATE bonga.users SET Status = 1 WHERE  id = ${user.user_id}`;
+                    const token = jwt.sign({ id: user.id, email: user.email }, process.env.SECRET);
+                    await pool.request()
+                        .input('user_id', sql.Int, user.user_id)
+                        .input('status', "active")
+                        .execute('UpdateUserStatus');
                     res.json({ success: true, token });
                 } else {
                     res.status(401).json({ success: false, message: 'Invalid email or password' });
@@ -80,11 +87,21 @@ module.exports = {
         }
     },
     updateUser: async(req, res) => {
-        const details = req.body
+        const { fullname, department, profile, password, email, roles } = req.body;
+        const { id } = req.params;
         try {
-            await sql.connect(mssqlconfig);
-            let results = await sql.query `UPDATE bonga.users SET full_name=${details.name}, username=${details.username}, profile=${details.profile},password=${details.password},email=${email},phone_number=${details.phone_number} WHERE id = ${details.id}`
-            if (results.rowsAffected.length) res.json({ success: true, message: 'user updated successfully' })
+            await pool.connect();
+            const result = await pool.request()
+                .input("id", id)
+                .input('fullname', fullname)
+                .input('email', email)
+                .input('profile', profile)
+                .input('password', password)
+                .input('department', department)
+                .input('roles', roles)
+                .execute('updateUser');
+            console.log(result);
+            if (result.rowsAffected.length) res.json({ success: true, message: 'user updated successfully' })
         } catch (error) {
             console.log(error)
         }
@@ -93,27 +110,30 @@ module.exports = {
     SoftDeleteUser: async(req, res) => {
         const { id } = req.params
         try {
-            await sql.connect(mssqlconfig);
-            let results = await sql.query `UPDATE bonga.users SET isDeleted=1 WHERE id = ${id}`
-            if (results.rowsAffected.length) res.json({ success: true, message: 'user deleted successfully' })
+            await pool.connect();
+            const result = await pool.request()
+                .input("id", id).execute('RemoveUser');
+            const users = result.recordset;
+            res.json(users);
+            console.log(users)
         } catch (error) {
-            console.log(error)
+            res.status(500).json(`Get User Details Error: ${error}`);
         }
 
     },
     Logout: async(req, res) => {
         const { id } = req.params
         try {
-            await sql.connect(mssqlconfig);
-            let results = await sql.query `UPDATE bonga.users SET Status = 0 WHERE id = ${id}`;
-            res.status(500).json({ success: true, message: 'successfully logged out' });
+            await pool.connect();
+            const result = await pool.request()
+                .input("id", id).execute('Logout');
+            const users = result.recordset;
+            res.json(users);
+            console.log(users)
         } catch (error) {
-            console.log(error)
-            res.status(401).json({ success: false, message: 'Error logging out' })
+            res.status(500).json(`Get User Details Error: ${error}`);
         }
-
-    }
-
+    },
 
 
 }
