@@ -1,13 +1,12 @@
 const categoriesRoutes = require('express').Router();
-const {} = require('../Controllers/customerControllers');
+const { getAllcategory, updateCategory, SoftDeletecategory, createcategory } = require('../Controllers/categoriesControllers');
 
-
-//update category
-categoriesRoutes.put('/category', updateCategory)
 
 // get all category
 categoriesRoutes.get('/category', getAllcategory)
 
+//update category
+categoriesRoutes.put('/category', updateCategory)
 
 //soft delete category of a specific id
 categoriesRoutes.delete('/category/:id', SoftDeletecategory)

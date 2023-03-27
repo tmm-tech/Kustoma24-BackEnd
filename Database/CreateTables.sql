@@ -33,7 +33,7 @@ CREATE TABLE kustoma.customer(
 CREATE TABLE kustoma.category(
     id INT  IDENTITY(1,1) PRIMARY KEY,
     "name" VARCHAR(250) NOT NULL,
-    "status" BIT DEFAULT 0,
+    "status" VARCHAR(250) NOT NULL,
      "date" DATETIME DEFAULT CURRENT_TIMESTAMP,
      isDeleted BIT DEFAULT 0
 );

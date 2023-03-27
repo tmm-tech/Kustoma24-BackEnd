@@ -11,9 +11,10 @@ const app = express();
 app.use(express.json());
 
 //Routes
-app.use('/users', UserRoutes);
-app.use('/activities', activitiesRoute);
 
+app.use('/activities', activitiesRoute);
+app.use('/categories', categoriesRoute);
+app.use('/users', UserRoutes);
 app.get('/', async(req, res) => {
         res.send("Confirmed Connection is Successful");
     })

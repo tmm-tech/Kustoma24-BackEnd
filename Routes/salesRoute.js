@@ -1,12 +1,10 @@
 const salesRoutes = require('express').Router();
-const {
+const {} = require('../Controllers/salesControllers');
 
-} = require('../Controllers/salesControllers');
+// // get all sales
+// salesRoutes.get('/sales', getAllSales)
 
-// get all sales
-salesRoutes.get('/sales', getAllSales)
-
-// update sales status
-salesRoutes.put('/sales/:id', updatesales)
+// // update sales status
+// salesRoutes.put('/sales/:id', updatesales)
 
 module.exports = salesRoutes;

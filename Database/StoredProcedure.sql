@@ -42,21 +42,17 @@ GO
 
 CREATE PROCEDURE UpdateCustomer
     @id INT,
-    @fullname VARCHAR(255),
-    @email VARCHAR(255),
-    @profile VARCHAR(25),
+    @fullname VARCHAR(100),
+    @email VARCHAR(100),
+    @profile VARCHAR(255),
     @password VARCHAR(255),
-    @department VARCHAR(255),
-    @roles VARCHAR(255)
 AS
 BEGIN
-    UPDATE kustoma.users
+    UPDATE kustoma.customer
     SET fullname = @fullname,
       email = @email,
       profile = @profile,
       password = @password,
-      department = @department,
-      roles = @roles
   WHERE id = @id;
 END
 GO
@@ -214,20 +210,19 @@ END
 GO
 -- Categories Stored Procedure
 
-CREATE PROCEDURE GetCategories
+ALTER PROCEDURE GetCategories
 AS
     SELECT * FROM kustoma.category
-    WHERE isDeleted = 0 AND status = 'active'
+    WHERE isDeleted = 0 AND status = 1
 GO
 
 CREATE PROCEDURE AddCategory
-    @name varchar(100),
-    @date date
+    @name varchar(100)
 AS
 BEGIN
     -- Insert category into Categories table
-    INSERT INTO kustoma.category (name, date) 
-    VALUES (@name, @date)
+    INSERT INTO kustoma.category (name) 
+    VALUES (@name)
 END
 GO
 
@@ -241,7 +236,16 @@ BEGIN
 END
 GO
 
-
+CREATE PROCEDURE Update_Category
+    @name INT,
+    @id INT
+AS
+BEGIN 
+    UPDATE kustoma.category
+    SET name = @name
+    WHERE id = @id
+END
+GO
 
 
 
