@@ -8,9 +8,7 @@ module.exports = {
             await pool.connect();
             const result = await pool.request()
                 .input("id", id).execute('Getactivity');
-            const activities = result.recordset;
-            res.json(activities);
-            if (result.rowsAffected.length) res.json({ success: true, message: 'activity retrieved successfully' })
+            if (result.rowsAffected.length) res.json({ success: true, message: 'activity retrieved successfully', data: result.recordset })
         } catch (error) {
             res.status(500).json(`Get All Activitie Error: ${error}`);
         }

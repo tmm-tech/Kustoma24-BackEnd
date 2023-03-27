@@ -14,10 +14,13 @@ const customerSchema = Joi.object({
         confirmpassword: Joi.ref("password"),
         gender: Joi.string().required(),
         confirmpassword: Joi.ref("password"),
-        phone: Joi.number()
+        phonenumber: Joi.number()
             .min(12),
+        loyalty_points: Joi.number()
+            .min(0),
+        country: Joi.string()
+            .min(0),
         DOB: Joi.date()
-            .less('12-31-2020')
             .required(),
         profile: Joi.string().uri(),
     }).with("password", "confirmpassword")

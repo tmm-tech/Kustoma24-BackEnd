@@ -3,17 +3,9 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const validateCreateUserSchema = require('../Services/RegistrationValidation')
 const { config } = require('../config/sqlConfig');
+const { createToken, verifyToken } = require('../Services/jwtServices')
 const pool = new sql.ConnectionPool(config);
 module.exports = {
-    // getAllThecustomers: async(req, res) => {
-    //     try {
-    //         await pool.connect();
-    //         const result = await pool.request().execute('GetCustomers');
-
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    // },
     createUser: async(req, res) => {
         const details = req.body;
 
@@ -58,7 +50,7 @@ module.exports = {
 
                 if (match) {
                     console.log(user.id)
-                    const token = jwt.sign({ id: user.id, email: user.email }, process.env.SECRET);
+                    let token = await createToken({ full_names: user.full_names, id: user.id })
                     await pool.request()
                         .input('id', user.id)
                         .input('status', "active")
@@ -85,9 +77,15 @@ module.exports = {
             res.json(users);
             console.log(users)
             if (result.rowsAffected.length) res.json({ success: true, message: 'user retrieved successfully' })
+            if (user.length) {
+                return user[0]
+            } else {
+                return undefined
+            }
         } catch (error) {
             res.status(500).json(`Get User Details Error: ${error}`);
         }
+
     },
     updateUser: async(req, res) => {
         const { fullname, department, profile, password, email, roles } = req.body;
@@ -136,6 +134,14 @@ module.exports = {
             res.status(500).json(`Get Log Out Error: ${error}`);
         }
     },
-
-
+    // userAuthenticate: async(req, res) => {
+    //     let token = req.headers["authorization"]
+    //     token = token.split(" ")[1];
+    //     try {
+    //         let data = await verifyToken(token);
+    //         res.json(data)
+    //     } catch (error) {
+    //         res.json(error)
+    //     }
+    // }
 }

@@ -1,9 +1,9 @@
 const notificationRoutes = require('express').Router();
-const {} = require('../Controllers/customerControllers');
+const { getAllNotification, createnotification } = require('../Controllers/notificationControllers');
 
 // get all notification
-//notificationRoutes.get('/notifications', getAllnotifications);
+notificationRoutes.get('/notifications/:id', getAllNotification);
 // create notification
-//notificationRoutes.post('/notification', createnotification);
+notificationRoutes.post('/', createnotification);
 
 module.exports = notificationRoutes;

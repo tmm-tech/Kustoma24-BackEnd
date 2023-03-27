@@ -1,16 +1,21 @@
 -- Customer Stored Procedures
-
+USE Kustoma24
+GO
 CREATE PROCEDURE add_customer 
     @fullname VARCHAR(100),
     @email VARCHAR(100),
     @profile VARCHAR(255),
+    @loyalty_points INT,
+    @country VARCHAR(100),
+    @DOB DATETIME,
+    @phonenumber INT,
     @gender VARCHAR(10),
     @password VARCHAR(255),
     @status VARCHAR(255)
 AS
 BEGIN
-    INSERT INTO kustoma.customer(fullname,email,profile,password,gender,status)
-    VALUES (@fullname,@email,@profile,@password,@gender,@status)
+    INSERT INTO kustoma.customer(fullname,email,profile,password,gender,status,loyalty_points,country,DOB,phonenumber)
+    VALUES (@fullname,@email,@profile,@password,@gender,@status,@loyalty_points,@country,@DOB,@phonenumber)
 END
 GO
 
@@ -44,28 +49,40 @@ CREATE PROCEDURE UpdateCustomer
     @id INT,
     @fullname VARCHAR(100),
     @email VARCHAR(100),
+    @phonenumber INT,
     @profile VARCHAR(255),
-    @password VARCHAR(255),
+    @password VARCHAR(255)
 AS
 BEGIN
     UPDATE kustoma.customer
     SET fullname = @fullname,
       email = @email,
       profile = @profile,
-      password = @password,
+      phonenumber = @phonenumber,
+      password = @password
   WHERE id = @id;
 END
 GO
--- Product Stored Procedures
-
-CREATE PROCEDURE get_products_by_category 
-    @category_id INT
+ALTER PROCEDURE UpdateCustomer_Status
+    @id INT,
+    @status BIT
 AS
-    SELECT * FROM kustoma.products
-    WHERE category_id = @category_id AND isDeleted = 0
-
+BEGIN
+    UPDATE kustoma.customer
+    SET status = @status
+    WHERE id = @id
+END
 GO
-
+CREATE PROCEDURE Remove_Customer
+    @id INT
+AS
+BEGIN
+    UPDATE kustoma.customer
+    SET isDeleted = 1
+    WHERE id = @id
+END
+GO
+-- Product Stored Procedures
 CREATE PROCEDURE getProduct
 
 AS
@@ -74,46 +91,68 @@ AS
 GO
 
 CREATE PROCEDURE AddProduct
-    @name varchar(100),
+    @title varchar(100),
     @image varchar(255),
-    @category varchar(100),
+    @category_id INT,
     @description varchar(255),
     @price decimal(10,2),
-    @user_id int
+    @status VARCHAR(100),
+    @rate INT,
+    @count INT
 AS
 BEGIN
-    DECLARE @category_id int
-    DECLARE @role VARCHAR(255)
-    -- Check if category exists
-    SELECT @category_id = id FROM kustoma.category WHERE name = @category
-    SELECT role = @role FROM kustoma.users WHERE id = @user_id
-    -- Set product status based on user role
-    DECLARE @status varchar(10)
-    SELECT @status = 
-        CASE 
-            WHEN @role = 'staff' THEN 'inactive'
-            ELSE 'active'
-        END
-    FROM kustoma.users 
-    WHERE id = @user_id
-    
     -- Insert product into Products table
-    INSERT INTO kustoma.products (title, image, category_id, description, price, status)
-    VALUES (@name, @image, @category_id, @description, @price, @status)
+    INSERT INTO kustoma.products (title, image, category_id, description, price, status,rate,[count])
+    VALUES (@title, @image, @category_id, @description, @price, @status,@rate,@count)
 END
 GO
 
 CREATE PROCEDURE Remove_Product
-    @product_id INT
+    @id INT
 AS
 BEGIN
     UPDATE kustoma.products
     SET isDeleted = 1
-    WHERE id = @product_id
+    WHERE id = @id
 END
 GO
 
+CREATE PROCEDURE UpdateProduct_Status
+    @status INT,
+    @id INT
+AS
+BEGIN 
+    UPDATE kustoma.products
+    SET status = @status
+    WHERE id = @id
+END
+GO
+CREATE PROCEDURE Update_product
+    @id INT,
+    @title varchar(100),
+    @image varchar(255),
+    @category_id INT,
+    @description varchar(255),
+    @price decimal(10,2)
+AS
+BEGIN 
+    UPDATE kustoma.products
+    SET title=@title, 
+    image=@image, 
+    category_id =@category_id, 
+    "description" = @description, 
+    price = @price
+    WHERE id = @id
+END
+GO
 -- Activities Procedures
+
+CREATE PROCEDURE Getactivity
+    @id INT
+AS
+    SELECT * FROM kustoma.activity 
+    WHERE user_id = @id;
+GO
 
 CREATE PROCEDURE add_activity
     @title VARCHAR(100),
@@ -126,12 +165,25 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE Getactivity
+CREATE PROCEDURE Getnotifications
     @id INT
 AS
-    SELECT * FROM kustoma.activity 
+    SELECT * FROM kustoma.notification 
     WHERE user_id = @id;
 GO
+-- Notifications Stored Procedures
+CREATE PROCEDURE add_notifications
+    @title VARCHAR(100),
+    @description VARCHAR(MAX),
+    @user_id INT,
+    @receiver INT
+AS
+BEGIN
+    INSERT INTO kustoma.notification (user_id,title,"description",receiver)
+    VALUES (@user_id,@title, @description,@receiver)
+END
+GO
+
 
 -- User Stored Procedures
 
@@ -210,34 +262,35 @@ END
 GO
 -- Categories Stored Procedure
 
-ALTER PROCEDURE GetCategories
+CREATE PROCEDURE GetCategories
 AS
     SELECT * FROM kustoma.category
     WHERE isDeleted = 0 AND status = 1
 GO
 
 CREATE PROCEDURE AddCategory
-    @name varchar(100)
+    @name varchar(100),
+    @status BIT
 AS
 BEGIN
     -- Insert category into Categories table
-    INSERT INTO kustoma.category (name) 
-    VALUES (@name)
+    INSERT INTO kustoma.category (name,status) 
+    VALUES (@name,@status)
 END
 GO
 
 CREATE PROCEDURE Remove_Category
-    @category_id INT
+    @id INT
 AS
 BEGIN 
     UPDATE kustoma.category
     SET isDeleted = 1
-    WHERE id = @category_id
+    WHERE id = @id
 END
 GO
 
 CREATE PROCEDURE Update_Category
-    @name INT,
+    @name VARCHAR(100),
     @id INT
 AS
 BEGIN 
@@ -246,39 +299,49 @@ BEGIN
     WHERE id = @id
 END
 GO
-
+CREATE PROCEDURE UpdateCategory_Status
+    @status INT,
+    @id INT
+AS
+BEGIN 
+    UPDATE kustoma.category
+    SET status = @status
+    WHERE id = @id
+END
+GO
 
 
 -- SALES Stored Procedure
+CREATE PROCEDURE AddSale
+    @date date,
+    @product_ids int[],
+    @quantities int[],
+    @prices decimal(10,2)[],
+    @customer_id int,
+    @discount decimal(10,2) = 0,
+    @payment_method varchar(50)
+AS
+BEGIN
+    DECLARE @i int = 1
+    DECLARE @total_price decimal(10,2) = 0
+    
+    WHILE @i <= (SELECT COUNT(*) FROM @product_ids)
+    BEGIN
+        DECLARE @product_id int = @product_ids[@i]
+        DECLARE @quantity int = @quantities[@i]
+        DECLARE @price decimal(10,2) = @prices[@i]
+        DECLARE @subtotal decimal(10,2) = @price * @quantity
+        SET @total_price += @subtotal
+        
+        INSERT INTO kustoma.sales (date, product_id, customer_id, price, discount, quantity, total_price, payment_method)
+        VALUES (@date, @product_id, @customer_id, @price, @discount, @quantity, @subtotal, @payment_method)
+        
+        SET @i += 1
+    END
+    
+    UPDATE kustoma.sales SET total_price = @total_price WHERE customer_id = @customer_id AND date = @date
+END
+GO
 
--- CREATE PROCEDURE AddSale
---     @date date,
---     @product_ids int[],
---     @quantities int[],
---     @prices decimal(10,2)[],
---     @customer_id int,
---     @discount decimal(10,2) = 0,
---     @payment_method varchar(50)
--- AS
--- BEGIN
---     DECLARE @i int = 1
---     DECLARE @total_price decimal(10,2) = 0
-    
---     WHILE @i <= ARRAY_LENGTH(@product_ids, 1)
---     BEGIN
---         DECLARE @product_id int = @product_ids[@i]
---         DECLARE @quantity int = @quantities[@i]
---         DECLARE @price decimal(10,2) = @prices[@i]
---         DECLARE @subtotal decimal(10,2) = @price * @quantity
---         SET @total_price += @subtotal
-        
---         INSERT INTO kustoma.sales (date, product_id, customer_id, price, discount, quantity, total_price, payment_method)
---         VALUES (@date, @product_id, @customer_id, @price, @discount, @quantity, @subtotal, @payment_method)
-        
---         SET @i += 1
---     END
-    
---     UPDATE kustoma.sales SET total_price = @total_price WHERE customer_id = @customer_id AND date = @date
--- END
--- GO
+
 

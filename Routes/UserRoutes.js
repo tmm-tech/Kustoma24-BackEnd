@@ -1,4 +1,5 @@
 const UserRoutes = require('express').Router();
+const { userAuthenticate } = require('../../../The Jitu React/REST API ENDPOINTS/controllers/userControllers');
 const {
     createUser,
     getAUser,
@@ -21,5 +22,7 @@ UserRoutes.put('/update/:id', updateUser)
 UserRoutes.post('/login', loginUser)
     // logout user
 UserRoutes.post('/logout/:id', Logout)
+    //authenticate
+    // UserRoutes.get('/user/authenticate', userAuthenticate)
 
 module.exports = UserRoutes

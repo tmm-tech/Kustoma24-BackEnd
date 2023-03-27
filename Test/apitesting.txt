@@ -2,51 +2,98 @@
                     ACTIVITY
 -----------------------------------------------------
 GET ACTIVITY
-GET https://localhost:4040/activities/activity/1 
+GET http://localhost:4040/activities/activity/4 
 -----------------------------------------------------
 Insert Activity
-POST https://localhost:4040/activities/activity 
+POST http://localhost:4040/activities/activity 
 -----------------------------------------------------
                     CATEGORY
 -----------------------------------------------------
 CREATE Category
-POST https://localhost:4040/users/register 
+POST http://localhost:4040/categories/Staff  
 -----------------------------------------------------
 Get Category Details
-GET https://localhost:4040/users/user/1 
+GET http://localhost:4040/categories/category 
 -----------------------------------------------------
 Soft Delete Category
-DELETE https://localhost:4040/users/1 
+DELETE http://localhost:4040/categories/category/5 
 -----------------------------------------------------
 Update Category
-PUT https://localhost:4040/users/update/user/1 
+PUT http://localhost:4040/users/update/categories/category  
+-----------------------------------------------------
+Update Category Status
+PUT http://localhost:4040/users/update/categories/category/1  
 -----------------------------------------------------
                     CUSTOMER
 -----------------------------------------------------
+CREATE Customer
+POST http://localhost:4040/customers/customer/Staff  
+-----------------------------------------------------
+Get Customer Details
+GET http://localhost:4040/customers/customer 
+-----------------------------------------------------
+Soft Delete Customer
+DELETE http://localhost:4040/customers/customer/5 
+-----------------------------------------------------
+Update Customer
+PUT http://localhost:4040/users/update/customers/customer  
+-----------------------------------------------------
+Update Customer Status
+PUT http://localhost:4040/customer/customerstatus/3  
+-----------------------------------------------------
+Update Customer Points
+PUT http://localhost:4040/customer/customerpoints/3
 -----------------------------------------------------
                     NOTIFICATION
 -----------------------------------------------------
+GET notification
+GET http://localhost:4040/notifications/notification/1 
+-----------------------------------------------------
+Insert notification
+POST http://localhost:4040/notifications/notification 
 -----------------------------------------------------
                     PRODUCT
 -----------------------------------------------------
+CREATE Product
+POST http://localhost:4040/product/product
+-----------------------------------------------------
+Get Product Details
+GET http://localhost:4040/product/products 
+-----------------------------------------------------
+Soft Delete Product
+DELETE http://localhost:4040/product/product/5 
+-----------------------------------------------------
+Update product
+PUT http://localhost:4040/product/product/1  
+-----------------------------------------------------
+Update product Status
+PUT http://localhost:4040/product/product/1  
 -----------------------------------------------------
                     SALES
 -----------------------------------------------------
+CREATE Sales
+POST http://localhost:4040/sales/sale  
+-----------------------------------------------------
+Get Sales Details
+GET http://localhost:4040/sales/sale 
+-----------------------------------------------------
+Update sales Status
+PUT http://localhost:4040/users/update/sales/sale/1  
 -----------------------------------------------------
                     USERS
 -----------------------------------------------------
 CREATE User
-POST https://localhost:4040/users/register 
+POST http://localhost:4040/users/register 
 -----------------------------------------------------
 Get User Details
-GET https://localhost:4040/users/user/1 
+GET http://localhost:4040/users/user/1 
 -----------------------------------------------------
 SoftDeleteUser User
-DELETE https://localhost:4040/users/1 
+DELETE http://localhost:4040/users/1 
 -----------------------------------------------------
  put User
-PUT https://localhost:4040/users/update/user/1 
+PUT http://localhost:4040/users/update/user/1 
 -----------------------------------------------------
 Login User
-POST https://localhost:4040/users/login
+POST http://localhost:4040/users/login
 -----------------------------------------------------
