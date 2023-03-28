@@ -16,4 +16,4 @@ app.get('/', async(req, res) => {
 
 //connection to the server
 const port = process.env.PORT || 4080;
-app.listen(port, () => { console.log(`Server Listening on port: ${port}`) })
+app.listen(port, () => { console.log(`Background Server Listening on port: ${port}`) })
