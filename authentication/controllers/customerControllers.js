@@ -2,7 +2,7 @@ const sql = require('mssql');
 const { config } = require('../config/sqlConfig');
 const bcrypt = require('bcrypt');
 const pool = new sql.ConnectionPool(config);
-const validateCustomerSchema = require('../../Services/customerValidation')
+const validateCustomerSchema = require('../services/customerValidation')
 module.exports = {
     getAllTheCustomer: async(req, res) => {
         try {

@@ -10,7 +10,7 @@ app.use(express.json());
 app.use('/activities', activitiesRoute);
 app.use('/notification', notificationRoute);
 app.get('/', async(req, res) => {
-    res.send("Confirmed Connection is Successful");
+    res.send("Confirmed Connection to background services is Successful");
 })
 
 

@@ -1,7 +1,7 @@
 const sql = require('mssql');
 const { config } = require('../config/sqlConfig');
 const pool = new sql.ConnectionPool(config);
-const validateCategoriesSchema = require('../Services/categoriesValidation')
+const validateCategoriesSchema = require('../services/categoriesValidation')
 module.exports = {
     getAllcategory: async(req, res) => {
         try {

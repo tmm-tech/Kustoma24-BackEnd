@@ -11,7 +11,7 @@ app.use('/categories', categoriesRoute);
 app.use('/product', ProductRoutes);
 app.use('/sales', salesRoute);
 app.get('/', async(req, res) => {
-    res.send("Confirmed Connection is Successful");
+    res.send("Confirmed Connection to Products is Successful");
 })
 
 

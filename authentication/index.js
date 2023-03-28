@@ -11,7 +11,7 @@ app.use('/users', UserRoutes);
 app.use('/customer', customerRoute);
 
 app.get('/', async(req, res) => {
-    res.send("Confirmed Connection is Successful");
+    res.send("Confirmed Connection  to Authentication is Successful");
 })
 
 

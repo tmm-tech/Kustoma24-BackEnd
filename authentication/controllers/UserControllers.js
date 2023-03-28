@@ -1,9 +1,9 @@
 const sql = require('mssql');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const validateCreateUserSchema = require('../Services/RegistrationValidation')
+const validateCreateUserSchema = require('../services/RegistrationValidation')
 const { config } = require('../config/sqlConfig');
-const { createToken, verifyToken } = require('../Services/jwtServices')
+const { createToken, verifyToken } = require('../services/jwtServices')
 const pool = new sql.ConnectionPool(config);
 module.exports = {
     createUser: async(req, res) => {

@@ -1,5 +1,4 @@
 const UserRoutes = require('express').Router();
-const { userAuthenticate } = require('../../../The Jitu React/REST API ENDPOINTS/controllers/userControllers');
 const {
     createUser,
     getAUser,
@@ -7,7 +6,7 @@ const {
     SoftDeleteUser,
     loginUser,
     Logout,
-} = require('../Controllers/UserControllers');
+} = require('../controllers/UserControllers');
 
 
 // create and insert data into the table
