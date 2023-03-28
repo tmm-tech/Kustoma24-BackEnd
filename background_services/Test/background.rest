@@ -1,0 +1,19 @@
+# -----------------------------------------------------
+#                     ACTIVITY
+# -----------------------------------------------------
+# GET ACTIVITY
+GET http://localhost:4040/activities/activity/4 
+# -----------------------------------------------------
+# Insert Activity
+POST http://localhost:4040/activities/activity 
+# -----------------------------------------------------
+#                     NOTIFICATION
+# -----------------------------------------------------
+GET notification
+GET http://localhost:4040/notifications/notification/1 
+# -----------------------------------------------------
+# Insert notification
+POST http://localhost:4040/notifications/notification 
+# -----------------------------------------------------
+#                     END
+# -----------------------------------------------------

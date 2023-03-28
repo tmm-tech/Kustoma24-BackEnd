@@ -1,23 +1,21 @@
 {
-  "name": "kustoma24-backend",
+  "name": "product_sales_services",
   "version": "1.0.0",
-  "description": "Kustoma24 Backend",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Tony Mwangi Mugi",
+  "keywords": [],
+  "author": "",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^5.1.0",
-    "cron": "^2.3.0",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "joi": "^17.9.1",
     "jsonwebtoken": "^9.0.0",
     "mssql": "^9.1.1",
     "node-cron": "^3.0.2",
-    "nodemailer": "^6.9.1",
     "nodemon": "^2.0.21"
   }
 }

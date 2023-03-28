@@ -1,7 +1,7 @@
 const sql = require('mssql');
 const { config } = require('../config/sqlConfig');
 const pool = new sql.ConnectionPool(config);
-const validateProductSchema = require('../Services/productValidation')
+const validateProductSchema = require('../../Services/productValidation')
 module.exports = {
     getAllproduct: async(req, res) => {
         try {

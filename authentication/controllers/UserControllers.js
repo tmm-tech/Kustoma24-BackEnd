@@ -57,7 +57,7 @@ module.exports = {
                         .execute('UpdateUserStatus');
                     res.json({ success: true, token });
                 } else {
-                    res.status(401).json({ success: false, message: 'Password no match' });
+                    res.status(401).json({ success: false, message: 'Invalid Credentials' });
                 }
             } else {
                 res.status(401).json({ success: false, message: 'Invalid email or password' });
@@ -73,10 +73,7 @@ module.exports = {
             await pool.connect();
             const result = await pool.request()
                 .input("id", id).execute('GetUser');
-            const users = result.recordset;
-            res.json(users);
-            console.log(users)
-            if (result.rowsAffected.length) res.json({ success: true, message: 'user retrieved successfully' })
+            if (result.rowsAffected.length) res.json({ success: true, message: 'user retrieved successfully', data: result.recordset })
             if (user.length) {
                 return user[0]
             } else {
@@ -102,8 +99,7 @@ module.exports = {
                 .input('department', department)
                 .input('roles', roles)
                 .execute('updateUser');
-            console.log(result);
-            if (result.rowsAffected.length) res.json({ success: true, message: 'user updated successfully' })
+            if (result.rowsAffected.length) res.json({ success: true, message: 'user updated successfully', data: result.recordset })
         } catch (error) {
             console.log(error)
         }

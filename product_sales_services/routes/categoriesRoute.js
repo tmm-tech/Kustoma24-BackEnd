@@ -15,6 +15,6 @@ categoriesRoutes.delete('/category/:id', SoftDeletecategory)
 categoriesRoutes.post('/category/:role', createcategory)
 
 // update status category
-categoriesRoutes.put('/category/:id', updateCategoryStatus)
+categoriesRoutes.put('/categorystatus/:id', updateCategoryStatus)
 
 module.exports = categoriesRoutes;

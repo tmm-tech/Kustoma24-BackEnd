@@ -2,7 +2,7 @@ const sql = require('mssql');
 const { config } = require('../config/sqlConfig');
 const bcrypt = require('bcrypt');
 const pool = new sql.ConnectionPool(config);
-const validateCustomerSchema = require('../Services/customerValidation')
+const validateCustomerSchema = require('../../Services/customerValidation')
 module.exports = {
     getAllTheCustomer: async(req, res) => {
         try {
@@ -98,13 +98,13 @@ module.exports = {
 
     },
     updateCustomerPoints: async(req, res) => {
-        const { loyaltypoints } = req.body;
+        const { points } = req.body;
         const { id } = req.params;
         try {
             await pool.connect();
             const result = await pool.request()
                 .input("id", id)
-                .input('points', loyaltypoints)
+                .input('points', points)
                 .execute('update_loyalty_points');
             console.log(result);
             if (result.rowsAffected.length) res.json({ success: true, message: 'Customer Points updated successfully', data: result.recordset })

@@ -1,0 +1,40 @@
+# -----------------------------------------------------
+#                     CUSTOMER
+# -----------------------------------------------------
+# CREATE Customer
+POST http://localhost:4040/customers/customer/Staff  
+# -----------------------------------------------------
+# Get Customer Details
+GET http://localhost:4040/customers/customer 
+# -----------------------------------------------------
+# Soft Delete Customer
+DELETE http://localhost:4040/customers/customer/5 
+# -----------------------------------------------------
+# Update Customer
+PUT http://localhost:4040/users/update/customers/customer  
+# -----------------------------------------------------
+# Update Customer Status
+PUT http://localhost:4040/customer/customerstatus/3  
+# -----------------------------------------------------
+# Update Customer Points
+PUT http://localhost:4040/customer/customerpoints/3
+# -----------------------------------------------------
+#                     USERS
+# -----------------------------------------------------
+# CREATE User
+POST http://localhost:4040/users/register 
+# -----------------------------------------------------
+# Get User Details
+GET http://localhost:4040/users/user/1 
+# -----------------------------------------------------
+# SoftDeleteUser User
+DELETE http://localhost:4040/users/1 
+# -----------------------------------------------------
+#  update User
+PUT http://localhost:4040/users/update/user/1 
+# -----------------------------------------------------
+# Login User
+POST http://localhost:4040/users/login
+# -----------------------------------------------------
+#                         END
+# -----------------------------------------------------
