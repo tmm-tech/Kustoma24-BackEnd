@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Sales Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: white;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            max-width: 600px;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+        
+        h1,
+        h2 {
+            color: #444444;
+            text-align: center;
+        }
+        
+        table {
+            border-collapse: collapse;
+            margin: 0 auto;
+            background-color: white;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        th,
+        td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #dddddd;
+        }
+        
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            color: #444444;
+        }
+        
+        td {
+            font-weight: bold;
+            color: #666666;
+        }
+        
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        img {
+            display: block;
+            margin: auto;
+            max-height: 100px;
+            max-width: 100%;
+        }
+        
+        .summary {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #dddddd;
+            background-color: white;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .summary p {
+            margin: 10px 0;
+            font-size: 16px;
+            color: #444444;
+        }
+        
+        .summary p strong {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <img class="logo" src="" alt="Kustoma24">
+    </div>
+    <h1>Sales Report</h1>
+    <p>Dear [Customer Name],</p>
+    <p>Thank you for your recent purchase on our website. We are excited to share with you the details of your order.</p>
+    <h2>Customer Information</h2>
+    <p>Name: <strong>[Customer Name]</strong></p>
+    <p>Email: <strong>[Customer Email]</strong></p>
+    <h2>Purchased Items</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Product ID</th>
+                <th>Product Name</th>
+                <th>Product Image</th>
+                <th>Price</th>
+                <th>Discount</th>
+                <th>Quantity</th>
+                <th>Total Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>[Product ID]</td>
+                <td>[Product Name]</td>
+                <td><img src="[Product Image]" alt="[Product Name]"></td>
+                <td>$[Price]</td>
+                <td>$[Discount]</td>
+                <td>[Quantity]</td>
+                <td>$[Total Price]</td>
+            </tr>
+            <!-- Repeat this row for each purchased item -->
+        </tbody>
+    </table>
+    <div class="summary">
+        <h2>Sales Summary</h2>
+        <p><strong>Total Items Purchased:</strong> [Total Items]</p>
+        <p><strong>Total Cost:</strong> $[Total Cost]</p>
+        <p><strong>Total Revenue:</strong> $[Total Revenue]</p>
+        <p><strong>Profit/Loss:</strong> $[Profit/Loss]</p>
+        <p>We value your patronage and hope to serve you again soon.</p>
+        <p>Best regards,</p>
+        <p>The Sales Team</p>
+    </div>
+    <div class="logo-container">
+        <img class="logo" src="[Company Logo]" alt="[Company Name]">
+    </div>
+</body>
+
+</html>

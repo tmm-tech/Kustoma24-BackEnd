@@ -14,6 +14,7 @@ CREATE PROCEDURE add_customer
     @status VARCHAR(255)
 AS
 BEGIN
+  SET NOCOUNT ON;
     INSERT INTO kustoma.customer(fullname,email,profile,password,gender,status,loyalty_points,country,DOB,phonenumber)
     VALUES (@fullname,@email,@profile,@password,@gender,@status,@loyalty_points,@country,@DOB,@phonenumber)
 END
@@ -23,6 +24,7 @@ CREATE PROCEDURE update_loyalty_points
     @id INT,
     @points INT
 AS
+  SET NOCOUNT ON;
     UPDATE kustoma.customer
     SET loyalty_points = loyalty_points + @points
     WHERE id = @id
@@ -30,6 +32,7 @@ GO
 CREATE PROCEDURE GetCustomers
 AS
 BEGIN
+  SET NOCOUNT ON;
     SELECT *
     FROM kustoma.customer
     WHERE isDeleted = 0;
@@ -39,6 +42,7 @@ CREATE PROCEDURE Remove_Customer
     @customer_id INT
 AS
 BEGIN
+  SET NOCOUNT ON;
     UPDATE kustoma.customer
     SET isDeleted = 1
     WHERE id = @customer_id
@@ -54,6 +58,7 @@ CREATE PROCEDURE UpdateCustomer
     @password VARCHAR(255)
 AS
 BEGIN
+  SET NOCOUNT ON;
     UPDATE kustoma.customer
     SET fullname = @fullname,
       email = @email,
@@ -63,11 +68,12 @@ BEGIN
   WHERE id = @id;
 END
 GO
-ALTER PROCEDURE UpdateCustomer_Status
+CREATE PROCEDURE UpdateCustomer_Status
     @id INT,
     @status BIT
 AS
 BEGIN
+  SET NOCOUNT ON;
     UPDATE kustoma.customer
     SET status = @status
     WHERE id = @id
@@ -77,6 +83,7 @@ CREATE PROCEDURE Remove_Customer
     @id INT
 AS
 BEGIN
+  SET NOCOUNT ON;
     UPDATE kustoma.customer
     SET isDeleted = 1
     WHERE id = @id
@@ -101,6 +108,7 @@ CREATE PROCEDURE AddProduct
     @count INT
 AS
 BEGIN
+  SET NOCOUNT ON;
     -- Insert product into Products table
     INSERT INTO kustoma.products (title, image, category_id, description, price, status,rate,[count])
     VALUES (@title, @image, @category_id, @description, @price, @status,@rate,@count)
@@ -111,6 +119,7 @@ CREATE PROCEDURE Remove_Product
     @id INT
 AS
 BEGIN
+  SET NOCOUNT ON;
     UPDATE kustoma.products
     SET isDeleted = 1
     WHERE id = @id
@@ -121,7 +130,8 @@ CREATE PROCEDURE UpdateProduct_Status
     @status INT,
     @id INT
 AS
-BEGIN 
+BEGIN
+  SET NOCOUNT ON; 
     UPDATE kustoma.products
     SET status = @status
     WHERE id = @id
@@ -135,7 +145,8 @@ CREATE PROCEDURE Update_product
     @description varchar(255),
     @price decimal(10,2)
 AS
-BEGIN 
+BEGIN
+  SET NOCOUNT ON; 
     UPDATE kustoma.products
     SET title=@title, 
     image=@image, 
@@ -160,6 +171,7 @@ CREATE PROCEDURE add_activity
     @user_id INT
 AS
 BEGIN
+  SET NOCOUNT ON;
     INSERT INTO kustoma.activity (user_id,title,"description")
     VALUES (@user_id,@title, @description)
 END
@@ -179,6 +191,7 @@ CREATE PROCEDURE add_notifications
     @receiver INT
 AS
 BEGIN
+  SET NOCOUNT ON;
     INSERT INTO kustoma.notification (user_id,title,"description",receiver)
     VALUES (@user_id,@title, @description,@receiver)
 END
@@ -198,6 +211,7 @@ CREATE PROCEDURE GetUser
     @id INT
 AS
 BEGIN
+  SET NOCOUNT ON;
     SELECT *
     FROM kustoma.users
     WHERE id = @id;
@@ -208,6 +222,7 @@ CREATE PROCEDURE RemoveUser
     @id INT
 AS
 BEGIN
+  SET NOCOUNT ON;
     UPDATE kustoma.users
     SET isDeleted = 1
     WHERE id = @id
@@ -218,6 +233,7 @@ CREATE PROCEDURE UpdateUserStatus
     @status VARCHAR(100)
 AS
 BEGIN
+  SET NOCOUNT ON;
     UPDATE kustoma.users
     SET "status" = @status
     WHERE id = @id
@@ -235,6 +251,7 @@ CREATE PROCEDURE add_User
     @status VARCHAR(255)
 AS
 BEGIN
+  SET NOCOUNT ON;
     INSERT INTO kustoma.users(fullname,email ,"profile" ,"password" ,gender ,department ,roles ,"status")
     VALUES (@fullname,@email,@profile,@password,@gender,@department,@roles,@status)
 END
@@ -250,6 +267,7 @@ CREATE PROCEDURE UpdateUser
     @roles VARCHAR(255)
 AS
 BEGIN
+  SET NOCOUNT ON;
     UPDATE kustoma.users
     SET fullname = @fullname,
       email = @email,
@@ -273,6 +291,7 @@ CREATE PROCEDURE AddCategory
     @status BIT
 AS
 BEGIN
+  SET NOCOUNT ON;
     -- Insert category into Categories table
     INSERT INTO kustoma.category (name,status) 
     VALUES (@name,@status)
@@ -282,7 +301,8 @@ GO
 CREATE PROCEDURE Remove_Category
     @id INT
 AS
-BEGIN 
+BEGIN
+  SET NOCOUNT ON; 
     UPDATE kustoma.category
     SET isDeleted = 1
     WHERE id = @id
@@ -293,7 +313,8 @@ CREATE PROCEDURE Update_Category
     @name VARCHAR(100),
     @id INT
 AS
-BEGIN 
+BEGIN
+  SET NOCOUNT ON; 
     UPDATE kustoma.category
     SET name = @name
     WHERE id = @id
@@ -303,7 +324,8 @@ CREATE PROCEDURE UpdateCategory_Status
     @status INT,
     @id INT
 AS
-BEGIN 
+BEGIN
+  SET NOCOUNT ON; 
     UPDATE kustoma.category
     SET status = @status
     WHERE id = @id
@@ -314,7 +336,7 @@ GO
 -- SALES Stored Procedure
 CREATE PROCEDURE AddSale
     @date date,
-    @product_ids int[],
+    @product_id int[],
     @quantities int[],
     @prices decimal(10,2)[],
     @customer_id int,
@@ -322,12 +344,14 @@ CREATE PROCEDURE AddSale
     @payment_method varchar(50)
 AS
 BEGIN
+  SET NOCOUNT ON;
     DECLARE @i int = 1
     DECLARE @total_price decimal(10,2) = 0
     
-    WHILE @i <= (SELECT COUNT(*) FROM @product_ids)
+    WHILE @i <= (SELECT COUNT(*) FROM @product_id)
     BEGIN
-        DECLARE @product_id int = @product_ids[@i]
+      SET NOCOUNT ON;
+        DECLARE @product_id int = @product_id[@i]
         DECLARE @quantity int = @quantities[@i]
         DECLARE @price decimal(10,2) = @prices[@i]
         DECLARE @subtotal decimal(10,2) = @price * @quantity
@@ -342,6 +366,32 @@ BEGIN
     UPDATE kustoma.sales SET total_price = @total_price WHERE customer_id = @customer_id AND date = @date
 END
 GO
+CREATE PROCEDURE get_weekly_sales
+AS
+BEGIN
+  SET NOCOUNT ON;
+  SELECT DATENAME(WEEKDAY, date) AS day, SUM(total_price) AS total, 
+         SUM(CASE WHEN status = 'complete' THEN total_price ELSE 0 END) AS complete,
+         SUM(CASE WHEN status = 'refunded' THEN total_price ELSE 0 END) AS refunded,
+         SUM(CASE WHEN status = 'pending' THEN total_price ELSE 0 END) AS pending
+  FROM kustoma.sales
+  WHERE date >= DATEADD(day, -7, GETDATE())
+  GROUP BY DATENAME(WEEKDAY, date)
+END
+GO
 
+CREATE PROCEDURE uspGetSalesStats
+AS
+BEGIN
+  SET NOCOUNT ON;
+    SET NOCOUNT ON;
 
+    SELECT 
+        SUM(price * quantity) AS revenue,
+        SUM(price * quantity * (100 - discount) / 100) AS total_cost,
+        SUM(price * quantity * discount / 100) AS discount_amount,
+        SUM(price * quantity * (100 - discount) / 100) - SUM(price * quantity) AS profit_loss
+    FROM kustoma.sales
+    WHERE status = 'complete';
 
+END

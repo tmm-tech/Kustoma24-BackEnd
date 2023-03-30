@@ -5,7 +5,7 @@ const secret = process.env.SECRET;
 module.exports = {
     createToken: async(data) => {
         try {
-            let token = await jwt.sign(data, secret, { expiresIn: '1hr' });
+            let token = await jwt.sign(data, secret, { expiresIn: '1h' });
             return token
         } catch (error) {
             console.log(error)

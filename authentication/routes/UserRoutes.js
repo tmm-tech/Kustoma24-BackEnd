@@ -8,7 +8,6 @@ const {
     Logout,
 } = require('../controllers/UserControllers');
 
-
 // create and insert data into the table
 UserRoutes.post('/register', createUser)
     //read for a specific id
@@ -24,4 +23,5 @@ UserRoutes.post('/logout/:id', Logout)
     //authenticate
     // UserRoutes.get('/user/authenticate', userAuthenticate)
 
+module.exports = UserRoutes
 module.exports = UserRoutes

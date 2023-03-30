@@ -2,7 +2,7 @@ const activitiesRoute = require('express').Router();
 const {
     getAllActivities,
     createactivity,
-} = require('../Controllers/activitiesControllers');
+} = require('../controllers/activitiesControllers');
 
 // get all activities
 activitiesRoute.get('/activity/:id', getAllActivities);

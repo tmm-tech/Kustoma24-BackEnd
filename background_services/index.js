@@ -9,8 +9,8 @@ app.use(express.json());
 
 app.use('/activities', activitiesRoute);
 app.use('/notification', notificationRoute);
-app.get('/', async(req, res) => {
-    res.send("Confirmed Connection to background services is Successful");
+app.get('/infoupdate', async(req, res) => {
+    res.json({ message: "Activities and Notifications Route Directory" });
 })
 
 

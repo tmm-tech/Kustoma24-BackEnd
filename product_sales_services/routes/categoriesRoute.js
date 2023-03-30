@@ -1,5 +1,5 @@
 const categoriesRoutes = require('express').Router();
-const { getAllcategory, updateCategory, SoftDeletecategory, createcategory, updateCategoryStatus } = require('../Controllers/categoriesControllers');
+const { getAllcategory, updateCategory, SoftDeletecategory, createcategory, updateCategoryStatus } = require('../controllers/categoriesControllers');
 
 
 // get all category

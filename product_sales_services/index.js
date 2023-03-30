@@ -10,8 +10,8 @@ app.use(express.json());
 app.use('/categories', categoriesRoute);
 app.use('/product', ProductRoutes);
 app.use('/sales', salesRoute);
-app.get('/', async(req, res) => {
-    res.send("Confirmed Connection to Products is Successful");
+app.get('/infoupdate', async(req, res) => {
+    res.json({ message: " Product Sals and Category Route Directory" });
 })
 
 

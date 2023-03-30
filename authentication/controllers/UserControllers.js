@@ -45,17 +45,17 @@ module.exports = {
 
             if (result.recordset.length > 0) {
                 const user = result.recordset[0];
-                const match = await bcrypt.compare(details.password, user.password);
+                const match = await bcrypt.compare(details.passwords, user.password);
                 console.log(match)
 
                 if (match) {
                     console.log(user.id)
-                    let token = await createToken({ full_names: user.full_names, id: user.id })
+                    let token = await createToken({ email: user.email, id: user.id })
                     await pool.request()
                         .input('id', user.id)
                         .input('status', "active")
                         .execute('UpdateUserStatus');
-                    res.json({ success: true, token });
+                    res.json({ success: true, bearer: token, data: result.recordset[0] });
                 } else {
                     res.status(401).json({ success: false, message: 'Invalid Credentials' });
                 }
@@ -68,17 +68,12 @@ module.exports = {
         }
     },
     getAUser: async(req, res) => {
-        const { id } = req.params
+        const { id } = req.params;
         try {
             await pool.connect();
             const result = await pool.request()
-                .input("id", id).execute('GetUser');
-            if (result.rowsAffected.length) res.json({ success: true, message: 'user retrieved successfully', data: result.recordset })
-            if (user.length) {
-                return user[0]
-            } else {
-                return undefined
-            }
+                .input("id", userId).execute('GetUser');
+            if (result.rowsAffected.length) res.json({ success: true, message: 'user retrieved successfully', data: result.recordset[0] })
         } catch (error) {
             res.status(500).json(`Get User Details Error: ${error}`);
         }

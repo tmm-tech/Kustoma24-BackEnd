@@ -1,18 +1,5 @@
-const nodemailer = require('nodemailer')
-const transporter = nodemailer.createTransport({
-        host: "smtp.gmail.com",
-        port: 587,
-        secure: false,
-        requireTLS: true,
-        auth: {
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASS
-        },
-
-    })
-    // Html Email  Template
-const htmlTemplate = `
-    <html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -166,21 +153,3 @@ const htmlTemplate = `
 </body>
 
 </html>
-    `;
-// Function to send weekly report
-exports.sendWeeklyReport = (recipient) => {
-    const mailOptions = {
-        from: process.env.EMAIL_USER,
-        to: recipient,
-        subject: 'Weekly Report',
-        html: htmlTemplate
-    };
-
-    transporter.sendMail(mailOptions, function(error, info) {
-        if (error) {
-            console.error(error);
-        } else {
-            console.log('Weekly report sent: ' + info.response);
-        }
-    });
-};

@@ -1,5 +1,5 @@
 const customerRoutes = require('express').Router();
-const { getAllTheCustomer, updateCustomer, SoftDeleteCustomer, createCustomer, updateCustomerStatus, updateCustomerPoints } = require('../Controllers/customerControllers');
+const { getAllTheCustomer, updateCustomer, SoftDeleteCustomer, createCustomer, updateCustomerStatus, updateCustomerPoints } = require('../controllers/customerControllers');
 
 //read data
 customerRoutes.get('/customers', getAllTheCustomer);
