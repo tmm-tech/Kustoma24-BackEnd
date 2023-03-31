@@ -3,7 +3,7 @@ const reportService = require('../services/SendEmailService');
 
 function scheduleReport() {
     // Run every week on Monday at 9:00 AM
-    cron.schedule('38 7 * * *', () => {
+    cron.schedule('50 07 * * *', () => {
         reportService.sendWeeklyReport('tonymugi4@gmail.com');
     });
 }

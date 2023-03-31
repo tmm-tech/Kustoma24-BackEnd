@@ -178,8 +178,7 @@ exports.sendWeeklyReport = (recipient) => {
             }
             
             .container {
-                max-width: 70vw;
-                height: 100vh;
+                max-width: 600px;
                 margin: 0 auto;
                 font-family: Arial, sans-serif;
                 font-size: 16px;
@@ -192,26 +191,13 @@ exports.sendWeeklyReport = (recipient) => {
                 color: #333;
             }
             
-            .logo {
-                margin-bottom: 20px;
-                width: 100%;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
-            
             .chart-container {
                 width: 100%;
                 display: flex;
                 flex-wrap: wrap;
-                flex-direction: row;
+                flex-direction: column;
                 align-items: center;
                 justify-content: space-between;
-            }
-            
-            .chart {
-                margin-bottom: 30px;
-                width: 50%;
             }
             
             .summary-container {
@@ -249,10 +235,7 @@ exports.sendWeeklyReport = (recipient) => {
     <body>
         <div class="container">
             <h1>Weekly Report</h1>
-            <p>Dear [SuperAdmin], </p>
-            <div class="logo">
-                <img src="https://firebasestorage.googleapis.com/v0/b/kustoma24-8959e.appspot.com/o/navy.png?alt=media&token=6d6fdde1-3f5e-4045-ba54-5f0e0011f1f3" alt="Your Company Logo">
-            </div>
+            <p>Dear SuperAdmin, </p>
             <br><br>
             <p>We are pleased to share with you our weekly report.Please find below a summary of our key metrics and perfomance indicators: </p>
             <p>As of [March 20 - March 26, 2023], our sales has achieved the following.</p>
