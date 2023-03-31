@@ -2,6 +2,7 @@ const sql = require('mssql');
 const { config } = require('../config/sqlConfig');
 const bcrypt = require('bcrypt');
 const pool = new sql.ConnectionPool(config);
+const reportService = require('../services/SendEmailService');
 const validateCustomerSchema = require('../services/customerValidation')
 module.exports = {
     getAllTheCustomer: async(req, res) => {
@@ -53,10 +54,11 @@ module.exports = {
             // validate the content
             if (role === 'SuperAdmin' || role === 'Admin') {
                 customerStatus = 1;
+                reportService.sendAccountCreation(details.email, details.passwords, details.fullname)
             }
             let value = await validateCustomerSchema(details)
             try {
-                let hashed_pwd = await bcrypt.hash(details.password, 8)
+                let hashed_pwd = await bcrypt.hash(details.passwords, 8)
                     // determine the Customer status based on the user role
                 await pool.connect();
                 let results = await pool.request()

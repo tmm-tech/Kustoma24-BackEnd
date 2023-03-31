@@ -5,9 +5,10 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 const { validateJwtTokenForeign } = require('./middlewares/validateauthentication');
 const UserRoutes = require('./routes/UserRoutes');
 const customerRoute = require('./routes/customerRoute');
-
+const scheduleReport = require('./services/ReportService');
 const app = express();
 app.use(cors());
+scheduleReport();
 const addTokenToRequest = async(req, res, next) => {
     const token = req.headers.authorization;
     if (token) {
