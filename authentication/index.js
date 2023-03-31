@@ -9,26 +9,28 @@ const scheduleReport = require('./services/ReportService');
 const app = express();
 app.use(cors());
 scheduleReport();
-const addTokenToRequest = async(req, res, next) => {
-    const token = req.headers.authorization;
-    if (token) {
-        try {
-            const decodedToken = await jwt.verify(token, process.env.JWT_SECRET);
-            req.token = decodedToken;
-        } catch (error) {
-            return res.status(401).json({ error: 'Invalid token.' });
-        }
-    }
-    next();
-};
+// const addTokenToRequest = async(req, res, next) => {
+//     const token = req.headers.authorization;
+//     console.log(token)
+//     if (token) {
+//         try {
+//             const decodedToken = await jwt.verify(token, process.env.JWT_SECRET);
+//             req.token = decodedToken;
+//         } catch (error) {
+//             // console.log(error)
+//             // return res.status(401).json({ error: 'Invalid token.' });
+//         }
+//     }
+//     next();
+// };
 
 // Add middleware to validate token and add it to the request object
-app.use(addTokenToRequest);
+// app.use(addTokenToRequest);
 // Redirect function for modifying the outgoing request
 const redirect = function(proxyReq, req, res, options) {
     console.log("the body with token", req.headers)
     console.log("the body with token", req.body)
-    let valid = validateJwtTokenForeign(proxyReq, req, res)
+        // let valid = validateJwtTokenForeign(proxyReq, req, res)
     if (valid === true) {
         if (req.body) {
             let bodyData = JSON.stringify(req.body);
@@ -49,13 +51,13 @@ const redirect = function(proxyReq, req, res, options) {
 const productsProxy = createProxyMiddleware('/productsales', {
     target: 'http://localhost:4042',
     changeOrigin: true,
-    onProxyReq: redirect
+    // onProxyReq: redirect
 });
 
 const backgroundProxy = createProxyMiddleware('/infoupdate', {
     target: 'http://localhost:4041',
     changeOrigin: true,
-    onProxyReq: redirect
+    // onProxyReq: redirect
 });
 
 app.use(express.urlencoded({ extended: true }))

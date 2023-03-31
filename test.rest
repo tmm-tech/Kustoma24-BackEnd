@@ -1,0 +1,4 @@
+###
+GET http://localhost:4040/productsales/categories/category
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im11Z2ltd2FzQGdtYWlsLmNvbSIsImlkIjoyMDEzLCJpYXQiOjE2ODAyNDQ0MzEsImV4cCI6MTY4MDI0ODAzMX0.f0iGpD01AseR49ob61LNCYhCS8YLX2MsH6mVkQhjNH8

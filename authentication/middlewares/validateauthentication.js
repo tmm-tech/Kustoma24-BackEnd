@@ -16,10 +16,12 @@ function validateTokenUser(req, res, next) {
     }
 }
 
-// Middleware to validate JWT token for foreign users
+// Middleware to validate JWT token for foreign usersrsrs
 function validateJwtTokenForeign(req, res, next) {
-    const authHeader = req.headers['authorization'];
+    console.log("hellllllllllllo", req.a)
+    const authHeader = req.headers.authorization;
     const token = authHeader && authHeader.split(' ')[1];
+    console.log('object', token)
     if (!token) return res.status(401).json({ error: 'Access denied. No token provided.' });
 
     try {
