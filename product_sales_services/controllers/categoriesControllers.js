@@ -7,7 +7,7 @@ module.exports = {
         try {
             await pool.connect();
             const result = await pool.request().execute('GetCategories');
-            if (result.rowsAffected.length) res.json({ success: true, message: 'Category retrieved successfully', data: result })
+            if (result.rowsAffected.length) res.json({ success: true, message: 'Category retrieved successfully', data: result.recordset })
         } catch (error) {
             res.status(500).json(`Get All Categories Error: ${error}`);
         }

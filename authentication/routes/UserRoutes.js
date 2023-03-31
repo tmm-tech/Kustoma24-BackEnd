@@ -19,7 +19,7 @@ UserRoutes.put('/update/:id', updateUser)
     // login a user
 UserRoutes.post('/login', loginUser)
     // logout user
-UserRoutes.post('/logout/:id', Logout)
+UserRoutes.post('/logout/:email', Logout)
     //authenticate
     // UserRoutes.get('/user/authenticate', userAuthenticate)
 

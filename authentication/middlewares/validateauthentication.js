@@ -2,16 +2,17 @@ const { verifyToken } = require('../services/jwtServices');
 
 // Middleware to validate JWT token for local users
 function validateTokenUser(req, res, next) {
-    const authHeader = req.header('x-auth-token');
-    const token = authHeader && authHeader.split(' ')[1];
-    if (!token) return res.status(401).json({ error: 'Access denied. No token provided.' });
-
-    try {
-        const decoded = verifyToken(token)
-        req.userId = decoded.id;
-        next();
-    } catch (err) {
-        res.status(400).json({ error: 'Invalid token.' });
+    if (!req.headers.authorization) {
+        res.status(401).json({ message: "Authorization header is missing" });
+        return 401
+    } else {
+        const token = req.headers.authorization.split(" ")[1];
+        try {
+            const decodedToken = validateToken(token);
+            decodedToken.message ? res.status(401).json({ message: decodedToken.message }) : next()
+        } catch (error) {
+            res.status(403).json(error.message)
+        }
     }
 }
 
@@ -29,6 +30,7 @@ function validateJwtTokenForeign(req, res, next) {
         res.status(400).json({ error: 'Invalid token.' });
     }
 }
+
 
 module.exports = {
     validateTokenUser,

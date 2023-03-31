@@ -8,7 +8,7 @@ const pool = new sql.ConnectionPool(config);
 module.exports = {
     createUser: async(req, res) => {
         const details = req.body;
-
+        console.log(details)
         try {
             // validate the content 
             let value = await validateCreateUserSchema(details)
@@ -25,9 +25,9 @@ module.exports = {
                 .input("gender", value.gender)
                 .input("department", value.department)
                 .input("roles", value.roles)
-                .input("status", "inactive")
+                .input("status", "active")
                 .execute('add_User')
-            console.log(results.recordset);
+            console.log(results.recordset[0]);
             res.json({ success: true, message: 'Registration successful' })
 
         } catch (error) {
@@ -72,7 +72,7 @@ module.exports = {
         try {
             await pool.connect();
             const result = await pool.request()
-                .input("id", userId).execute('GetUser');
+                .input("id", id).execute('GetUser');
             if (result.rowsAffected.length) res.json({ success: true, message: 'user retrieved successfully', data: result.recordset[0] })
         } catch (error) {
             res.status(500).json(`Get User Details Error: ${error}`);
@@ -113,11 +113,11 @@ module.exports = {
 
     },
     Logout: async(req, res) => {
-        const { id } = req.params
+        const { email } = req.params
         try {
             await pool.connect();
             const result = await pool.request()
-                .input("id", id)
+                .input("emails", email)
                 .input("status", "inactive")
                 .execute('UpdateUserStatus');
             if (result.rowsAffected.length) res.json({ success: true, message: 'user Log Out successful' })
