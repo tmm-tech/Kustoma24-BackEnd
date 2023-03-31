@@ -46,7 +46,7 @@ const redirect = function(proxyReq, req, res, options) {
 };
 
 // Proxy middleware for product sales service
-const productsProxy = createProxyMiddleware('/product_sales', {
+const productsProxy = createProxyMiddleware('/productsales', {
     target: 'http://localhost:4042',
     changeOrigin: true,
     onProxyReq: redirect
